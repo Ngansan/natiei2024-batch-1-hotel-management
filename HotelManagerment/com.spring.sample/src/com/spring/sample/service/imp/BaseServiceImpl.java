@@ -3,6 +3,7 @@ package com.spring.sample.service.imp;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.spring.sample.dao.PermissionDAO;
+import com.spring.sample.dao.RentalReceiptsDAO;
 import com.spring.sample.dao.RoomDAO;
 import com.spring.sample.dao.RoomTypeDAO;
 import com.spring.sample.dao.SettingDAO;
@@ -33,6 +34,9 @@ public class BaseServiceImpl {
 	
 	@Autowired
 	protected SettingDAO settingDAO;
+	
+	@Autowired
+	protected RentalReceiptsDAO rentalReceiptsDAO;
 
 	public UserDAO getUserDAO() {
 		return userDAO;
@@ -89,5 +93,15 @@ public class BaseServiceImpl {
 	public void setSettingDAO(SettingDAO settingDAO) {
 		this.settingDAO = settingDAO;
 	}
+
+	public RentalReceiptsDAO getRentalReceiptsDAO() {
+		return rentalReceiptsDAO;
+	}
+
+	public void setRentalReceiptsDAO(RentalReceiptsDAO rentalReceiptsDAO) {
+		this.rentalReceiptsDAO = rentalReceiptsDAO;
+	}
+	
+	
 
 }

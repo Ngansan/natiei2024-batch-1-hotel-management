@@ -32,4 +32,11 @@ public class RoomServiceImp extends BaseServiceImpl implements RoomService {
 	public void save(Room newRoom) {
 		roomDAO.save(newRoom);
 	}
+	
+	@Override
+	public List<Room> getAvailableRooms() {
+		return roomDAO.getAvailableRooms();
+	}
+	
+	
 }

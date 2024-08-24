@@ -9,6 +9,10 @@ import com.spring.sample.service.RoomTypeService;
 
 @Service
 public class RoomTypeServiceImp extends BaseServiceImpl implements RoomTypeService {
+	
+	private RoomTypeServiceImp() {
+	}
+	
 	@Override
 	public List<RoomType> getAllTypeRooms() {
 		return roomTypeDAO.getAllTypeRooms();
@@ -18,5 +22,4 @@ public class RoomTypeServiceImp extends BaseServiceImpl implements RoomTypeServi
 	public RoomType findById(Integer typeRoomId) {
 		return roomTypeDAO.findById(typeRoomId);
 	}
-
 }

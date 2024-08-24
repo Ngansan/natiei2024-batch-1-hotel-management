@@ -68,5 +68,4 @@ public class RentalReceipts extends BaseEntity implements Serializable {
         this.amountOfPayment = amountOfPayment;
         this.corespondingInvoice = corespondingInvoice;
     }
-
 }
