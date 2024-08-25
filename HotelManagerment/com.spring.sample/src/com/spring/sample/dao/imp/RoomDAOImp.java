@@ -1,5 +1,6 @@
 package com.spring.sample.dao.imp;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.LockOptions;
@@ -58,14 +59,43 @@ public class RoomDAOImp extends GenericDAOImp<Room, Integer> implements RoomDAO 
 	@Override
 	public void save(Room newRoom) {
 		getHibernateTemplate().saveOrUpdate(newRoom);
-	
 	}
 	
 	@Override
+	public Room findById(Integer id) {
+		String hql = "FROM Room r WHERE r.id = :id";
+		Query<Room> query = getSession().createQuery(hql, Room.class);
+		query.setParameter("id", id);
+		return query.uniqueResult();
+	}
+	
+    @Override
+    public Room getRoom(String roomName) {
+    	String hql = "FROM Room r  where r.name = :roomName";
+        // Tạo đối tượng Query với câu truy vấn và thiết lập tham số
+        Query<Room> query = getSession().createQuery(hql, Room.class);
+        query.setParameter("roomName", roomName);
+        return query.uniqueResult();
+    }
+	
+	@Override
 	public List<Room> getAvailableRooms() {
-		String hql = "SELECT r FROM Room r JOIN FETCH r.roomType rt WHERE r.status = 0";
+		String hql = "SELECT r FROM Room r JOIN FETCH r.roomType rt WHERE r.status = 0"; /*0: available; 1: rented*/
 		Query<Room> query = getSession().createQuery(hql, Room.class);
 		return query.getResultList();
-
 	}
+	
+//	@Override
+//	public void updateStatus(String name, Integer status) {
+//		Room room = getHibernateTemplate().get(Room.class, name);
+////		Room room = getRoom(name);
+//		
+//		if (room == null) {
+//			throw new RuntimeException("Room not found");
+//		}
+//		// Cập nhật các thuộc tính
+//		room.setStatus(0);
+//		// Lưu lại entity đã cập nhật
+//		getHibernateTemplate().update(room);
+//	}	
 }

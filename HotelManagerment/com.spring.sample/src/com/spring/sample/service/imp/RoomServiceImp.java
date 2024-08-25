@@ -38,5 +38,18 @@ public class RoomServiceImp extends BaseServiceImpl implements RoomService {
 		return roomDAO.getAvailableRooms();
 	}
 	
+	@Override
+	public Room findById(Integer Id) {
+		return roomDAO.findById(Id);
+	}
 	
+	@Override
+	public Room getRoom(String roomName) {
+		return roomDAO.getRoom(roomName);
+	}
+	
+//	@Override
+//	public void updateStatus(String name, Integer status) {
+//		roomDAO.updateStatus(name, status);
+//	}
 }

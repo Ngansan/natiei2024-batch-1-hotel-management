@@ -14,5 +14,11 @@ public interface RoomService {
 
 	void save(Room newRoom);
 	
+	Room findById(Integer Id);
+	
 	List<Room> getAvailableRooms();
+	
+	Room getRoom(String roomName);
+	
+//	void updateStatus(String name, Integer status);
 }

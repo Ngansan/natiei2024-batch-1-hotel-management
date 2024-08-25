@@ -18,41 +18,107 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@NoArgsConstructor
 @Entity
 @Table(name = "INVOICES") // HOA DON
 public class Invoices extends BaseEntity implements Serializable {
 
-    @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id; // MA HOA DON
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-    @Column(name = "GuestName")
-    private String guestName; // TEN KHACH HANG
+	@Id
+	@Column(name = "ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id; // MA HOA DON
 
-    @Column(name = "IssueDate")
-    private LocalDateTime createdDate; // NGAY LAP HOA DON
+	@Column(name = "GuestName")
+	private String guestName; // TEN KHACH HANG
 
-    @Column(name = "PaymentDate")
-    private LocalDateTime paymentDate; // NGAY THANH TOAN
+	@Column(name = "IssueDate")
+	private LocalDateTime createdDate; // NGAY LAP HOA DON
 
-    @Column(name = "TotalAmount")
-    private Float totalAmount; // TRI GIA HOA DON
+	@Column(name = "PaymentDate")
+	private LocalDateTime paymentDate; // NGAY THANH TOAN
 
-    @Column(name = "PaymentStatus")
-    private Integer paymentStatus; // TINH TRANG THANH TOAN
+	@Column(name = "TotalAmount")
+	private Float totalAmount; // TRI GIA HOA DON
 
-    @OneToMany(mappedBy = "corespondingInvoice")
-    private Set<RentalReceipts> rentalReceipts;
+	@Column(name = "PaymentStatus")
+	private Integer paymentStatus; // TINH TRANG THANH TOAN
 
-    public Invoices(String guestName, LocalDateTime createdDate, LocalDateTime paymentDate, Float totalAmount,
-            Integer paymentStatus) {
-        this.guestName = guestName;
-        this.createdDate = createdDate;
-        this.paymentDate = paymentDate;
-        this.totalAmount = totalAmount;
-        this.paymentStatus = paymentStatus;
-    }
+	@OneToMany(mappedBy = "corespondingInvoice")
+	private Set<RentalReceipts> rentalReceipts;
 
+	public Invoices(String guestName, LocalDateTime createdDate, LocalDateTime paymentDate, Float totalAmount,
+			Integer paymentStatus) {
+		this.guestName = guestName;
+		this.createdDate = createdDate;
+		this.paymentDate = paymentDate;
+		this.totalAmount = totalAmount;
+		this.paymentStatus = paymentStatus;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getGuestName() {
+		return guestName;
+	}
+
+	public void setGuestName(String guestName) {
+		this.guestName = guestName;
+	}
+
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public LocalDateTime getPaymentDate() {
+		return paymentDate;
+	}
+
+	public void setPaymentDate(LocalDateTime paymentDate) {
+		this.paymentDate = paymentDate;
+	}
+
+	public Float getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(Float totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public Integer getPaymentStatus() {
+		return paymentStatus;
+	}
+
+	public void setPaymentStatus(Integer paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+
+	public Set<RentalReceipts> getRentalReceipts() {
+		return rentalReceipts;
+	}
+
+	public void setRentalReceipts(Set<RentalReceipts> rentalReceipts) {
+		this.rentalReceipts = rentalReceipts;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Invoices() {
+	}
 }

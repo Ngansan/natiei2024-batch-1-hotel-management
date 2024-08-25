@@ -283,3 +283,15 @@ select {
 .table {
 	width: 100%;
 }
+.grid-container_bill td, 
+.grid-container_bill td{
+	white-space: nowrap;
+}
+
+.list_room th, 
+.list_room td{
+	white-space: nowrap;
+}
+.billbox{
+	box-sizing: border-box;
+}

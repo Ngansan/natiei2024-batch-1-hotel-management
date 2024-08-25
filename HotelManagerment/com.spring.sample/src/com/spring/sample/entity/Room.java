@@ -3,6 +3,7 @@ package com.spring.sample.entity;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,9 @@ import javax.persistence.Table;
 @Table(name = "ROOMS") // PHONG
 public class Room extends BaseEntity implements Serializable {
 
-    @Id
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RoomID")
     private Integer id; // MA PHONG
@@ -35,7 +38,15 @@ public class Room extends BaseEntity implements Serializable {
     @JoinColumn(name = "RoomTypeID")
     private RoomType roomType;
 
-    @OneToMany(mappedBy = "corespondingRoom")
+    public Set<RentalReceipts> getRentalReceipts() {
+		return RentalReceipts;
+	}
+
+	public void setRentalReceipts(Set<RentalReceipts> rentalReceipts) {
+		RentalReceipts = rentalReceipts;
+	}
+
+	@OneToMany(mappedBy = "corespondingRoom", cascade = CascadeType.ALL)
     private Set<RentalReceipts> RentalReceipts;
 
     // Constructors

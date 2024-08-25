@@ -22,7 +22,6 @@ public class RoomTypeDAOImp extends GenericDAOImp<RoomType, Integer> implements 
 
 	@Override
 	public RoomType findById(Integer roomTypeID) {
-
 		String hql = "FROM RoomType r WHERE r.id = :roomTypeID";
 		Query<RoomType> query = getSession().createQuery(hql, RoomType.class);
 		query.setParameter("roomTypeID", roomTypeID);

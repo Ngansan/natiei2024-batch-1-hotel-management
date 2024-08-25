@@ -17,7 +17,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@NoArgsConstructor
 @Entity
 @Table(name = "GUEST_TYPES") // LOAI KHACH
 public class GuestTypes extends BaseEntity implements Serializable {
@@ -41,4 +40,7 @@ public class GuestTypes extends BaseEntity implements Serializable {
         this.surchargeRate = surchargeRate;
     }
 
+    public GuestTypes() {
+
+    }
 }

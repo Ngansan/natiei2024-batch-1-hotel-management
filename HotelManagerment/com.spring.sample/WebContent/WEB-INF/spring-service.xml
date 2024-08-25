@@ -71,5 +71,19 @@
 			</bean>
 		</property>
 	</bean>
+	<bean id="guestTypesService" parent="baseTransactionProxy">
+		<property name="target">
+			<bean class="com.spring.sample.service.imp.GuestTypesServiceImp">
+				<property name="guestTypesDAO" ref="guestTypesDAO" />
+			</bean>
+		</property>
+	</bean>
+	<bean id="registeredGuestsService" parent="baseTransactionProxy">
+		<property name="target">
+			<bean class="com.spring.sample.service.imp.RegisteredGuestsServiceImp">
+				<property name="registeredGuestsDAO" ref="registeredGuestsDAO" />
+			</bean>
+		</property>
+	</bean>
 
 </beans>

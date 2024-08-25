@@ -40,6 +40,19 @@
 		class="com.spring.sample.dao.imp.SettingDAOImp">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	 
 	
+	<bean id="rentalReceiptsDAO"
+		class="com.spring.sample.dao.imp.RentalReceiptsDAOImp">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="guestTypesDAO"
+		class="com.spring.sample.dao.imp.GuestTypesDAOImp">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="registeredGuestsDAO"
+		class="com.spring.sample.dao.imp.RegisteredGuestsDAOImp">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>

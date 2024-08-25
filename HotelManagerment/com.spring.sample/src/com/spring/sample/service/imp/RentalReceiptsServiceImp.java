@@ -18,4 +18,13 @@ public class RentalReceiptsServiceImp extends BaseServiceImpl implements RentalR
 		return rentalReceiptsDAO.getAllRoomBills();
 	}
 
+	@Override
+	public void save(RentalReceipts newReceipt) {
+		rentalReceiptsDAO.save(newReceipt);
+	}
+	
+//	@Override
+//	public List<RentalReceipts> getCustomerInRoomBill() {
+//		return rentalReceiptsDAO.getCustomerInRoomBill();
+//	}
 }

@@ -17,7 +17,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@NoArgsConstructor
 @Entity
 @Table(name = "REGISTERED_GUESTS") // KHÁCH ĐỨNG TÊN PHÒNG
 public class RegisteredGuests extends BaseEntity implements Serializable {
@@ -42,4 +41,6 @@ public class RegisteredGuests extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "corespondingRegisteredGuest")
     private Set<RentalReceipts> rentalReceipts;
 
+    public RegisteredGuests() {
+    }
 }
