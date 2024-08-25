@@ -38,5 +38,10 @@ public class RoomServiceImp extends BaseServiceImpl implements RoomService {
 		return roomDAO.getAvailableRooms();
 	}
 	
+	@Override
+	public Room findById(Integer Id) {
+		return roomDAO.findById(Id);
+	}
+	
 	
 }

@@ -58,14 +58,20 @@ public class RoomDAOImp extends GenericDAOImp<Room, Integer> implements RoomDAO 
 	@Override
 	public void save(Room newRoom) {
 		getHibernateTemplate().saveOrUpdate(newRoom);
+	}
 	
+	@Override
+	public Room findById(Integer id) {
+		String hql = "FROM Room r WHERE r.id = :id";
+		Query<Room> query = getSession().createQuery(hql, Room.class);
+		query.setParameter("id", id);
+		return query.uniqueResult();
 	}
 	
 	@Override
 	public List<Room> getAvailableRooms() {
-		String hql = "SELECT r FROM Room r JOIN FETCH r.roomType rt WHERE r.status = 0";
+		String hql = "SELECT r FROM Room r JOIN FETCH r.roomType rt WHERE r.status = 0"; /*0: available; 1: rented*/
 		Query<Room> query = getSession().createQuery(hql, Room.class);
 		return query.getResultList();
-
 	}
 }

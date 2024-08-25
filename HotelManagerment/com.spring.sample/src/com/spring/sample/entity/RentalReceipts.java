@@ -68,4 +68,28 @@ public class RentalReceipts extends BaseEntity implements Serializable {
         this.amountOfPayment = amountOfPayment;
         this.corespondingInvoice = corespondingInvoice;
     }
+
+	public RentalReceipts(String roomName, CharSequence checkInDateTime2, CharSequence checkOutDateTime2) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public void setCorespondingRoom(String roomName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setCheckInDateTime(LocalDateTime localDateTime) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setCheckOutDateTime(LocalDateTime localDateTime) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setPaymentStatus(int i) {
+		// TODO Auto-generated method stub
+		
+	}
 }

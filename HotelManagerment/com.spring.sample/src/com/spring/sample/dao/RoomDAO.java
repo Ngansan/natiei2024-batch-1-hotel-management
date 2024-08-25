@@ -14,5 +14,9 @@ public interface RoomDAO {
 
 	void save(Room newRoom);
 	
+	Room findById(Integer Id);
+	
 	List<Room> getAvailableRooms();
+	
+	
 }

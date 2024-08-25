@@ -1,5 +1,6 @@
 package com.spring.sample.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 
@@ -38,26 +39,50 @@ public class BillForRentsController {
 	public String index(Locale locale, Model model) {
 		List<Room> listAvailableRooms = roomService.getAvailableRooms();
         model.addAttribute("listAvailableRooms", listAvailableRooms);
+        
+        List<Room> rooms = roomService.getAllRooms();
+        model.addAttribute("rooms", rooms);
 		
         List<RentalReceipts> listAllRoomBills = rentalReceiptsService.getAllRoomBills();
         model.addAttribute("listAllRoomBills", listAllRoomBills);
 		return "bill-for-rents/index";
 	}
 	
-	// XÓA PHÒNG
-	@PostMapping("/delete")
-	public String deleteRentalRoom(@RequestParam("roomID") Integer roomID, Model model) {
+	@PostMapping("/handle")
+	public String handleBillForRents(@RequestParam("roomName") String roomName,
+			@RequestParam("checkInDateTime") CharSequence checkInDateTime,
+			@RequestParam("checkOutDateTime") CharSequence checkOutDateTime, @RequestParam("id") Integer id,
+			@RequestParam("status") String status, Model model) {
 
-		try {
+//		// Lấy thông tin phòng từ ID
+//		Room room = roomService.findById(id);
+//		if (room == null) {
+//			model.addAttribute("error", "Không tìm thấy phòng với ID: " + id);
+//			return "error"; // Hiển thị trang lỗi nếu không tìm thấy phòng
+//		}
+		
+		//Lấy thông tin phòng theo tên phòng
+//		Room room = roomService
+		// Gọi service để lưu thông tin phiếu thuê phòng
+		rentalReceiptsService.createRentalReceipt(id, roomName, checkInDateTime, checkOutDateTime, status);
 
-			roomService.deleteRoomById(roomID);
-			logger.info("Phòng với ID: {} đã được xóa thành công.", roomID);
+		RentalReceipts newReceipt = new RentalReceipts(roomName, checkInDateTime, checkOutDateTime);
+		newReceipt.setCorespondingRoom(roomName);
+		newReceipt.setCheckInDateTime(LocalDateTime.parse(checkInDateTime));
+		newReceipt.setCheckOutDateTime(LocalDateTime.parse(checkOutDateTime));
+		newReceipt.setPaymentStatus(0); // Mặc định là chưa thanh toán
 
-		} catch (Exception e) {
+		// Lưu phiếu thuê phòng vào cơ sở dữ liệu
+		rentalReceiptsService.save(newReceipt);
+		// Cập nhật lại danh sách phiếu thuê phòng
+		
+//      List<RentalReceipts> listAllRoomBills = rentalReceiptsService.getAllRoomBills();
+//      model.addAttribute("listAllRoomBills", listAllRoomBills);
 
-			model.addAttribute("errorMessage", "Có lỗi xảy ra khi xóa phòng với ID: " + roomID + ". Vui lòng thử lại.");
-		}
+		return "redirect:/INSERT_ROOMBILL";
+//        
 
-		return "redirect:/bill-for-rents";
 	}
+	
+
 }

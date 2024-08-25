@@ -14,5 +14,7 @@ public interface RoomService {
 
 	void save(Room newRoom);
 	
+	Room findById(Integer Id);
+	
 	List<Room> getAvailableRooms();
 }
