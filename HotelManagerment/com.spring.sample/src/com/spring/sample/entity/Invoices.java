@@ -23,7 +23,12 @@ import lombok.Setter;
 @Table(name = "INVOICES") // HOA DON
 public class Invoices extends BaseEntity implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id; // MA HOA DON
@@ -54,5 +59,67 @@ public class Invoices extends BaseEntity implements Serializable {
         this.totalAmount = totalAmount;
         this.paymentStatus = paymentStatus;
     }
+    
+    public Integer getId() {
+		return id;
+	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getGuestName() {
+		return guestName;
+	}
+
+	public void setGuestName(String guestName) {
+		this.guestName = guestName;
+	}
+
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public LocalDateTime getPaymentDate() {
+		return paymentDate;
+	}
+
+	public void setPaymentDate(LocalDateTime paymentDate) {
+		this.paymentDate = paymentDate;
+	}
+
+	public Float getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(Float totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public Integer getPaymentStatus() {
+		return paymentStatus;
+	}
+
+	public void setPaymentStatus(Integer paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+
+	public Set<RentalReceipts> getRentalReceipts() {
+		return rentalReceipts;
+	}
+
+	public void setRentalReceipts(Set<RentalReceipts> rentalReceipts) {
+		this.rentalReceipts = rentalReceipts;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Invoices() {
+    }
 }

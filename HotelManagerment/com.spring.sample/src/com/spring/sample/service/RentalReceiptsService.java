@@ -1,15 +1,17 @@
 package com.spring.sample.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.spring.sample.entity.RentalReceipts;
-import com.spring.sample.entity.RoomType;
 
 public interface RentalReceiptsService {
 	
 	List<RentalReceipts> getAllRoomBills();
 	
-	void deleteRentalRoomById(Integer id);
-
-	void updateRentalRoom(Integer id, String nameRoom, String note, RoomType roomType);
+//	void createRentalReceipt(Integer id, String roomName, LocalDateTime checkInDateTime, LocalDateTime checkOutDateTime, String status);
+	
+	void save(RentalReceipts newReceipt);
+	
+//	List<RentalReceipts> getCustomerInRoomBill();
 }

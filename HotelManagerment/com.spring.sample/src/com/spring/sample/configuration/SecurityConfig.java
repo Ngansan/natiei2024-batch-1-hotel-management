@@ -61,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/room-categories/**").permitAll()
 				.antMatchers("/rooms").permitAll()	
 				.antMatchers("/bill-for-rents").permitAll()
+				.antMatchers("/bill-for-rents/**").permitAll()
 				.antMatchers("/revenues").permitAll() // Thay đổi từ HEAD
 				.antMatchers("/authorizations").permitAll()
 				.antMatchers("/authorizations/**").permitAll()

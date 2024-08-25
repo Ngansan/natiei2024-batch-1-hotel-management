@@ -41,5 +41,7 @@ public class RegisteredGuests extends BaseEntity implements Serializable {
 
     @OneToMany(mappedBy = "corespondingRegisteredGuest")
     private Set<RentalReceipts> rentalReceipts;
-
+    
+    public RegisteredGuests() {
+    }
 }

@@ -1,5 +1,6 @@
 package com.spring.sample.service.imp;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +39,13 @@ public class RoomServiceImp extends BaseServiceImpl implements RoomService {
 		return roomDAO.getAvailableRooms();
 	}
 	
+	@Override
+	public Room findById(Integer Id) {
+		return roomDAO.findById(Id);
+	}
 	
+	@Override
+	public Room getRoom(String roomName) {
+		return roomDAO.getRoom(roomName);
+	}
 }

@@ -1,5 +1,6 @@
 package com.spring.sample.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.spring.sample.entity.Room;
@@ -14,5 +15,10 @@ public interface RoomDAO {
 
 	void save(Room newRoom);
 	
+	Room findById(Integer Id);
+	
 	List<Room> getAvailableRooms();
+	
+	Room getRoom(String roomName);
+
 }

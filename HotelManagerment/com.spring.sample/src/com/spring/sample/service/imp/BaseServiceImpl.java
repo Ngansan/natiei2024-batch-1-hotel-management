@@ -2,6 +2,8 @@ package com.spring.sample.service.imp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.spring.sample.dao.RegisteredGuestsDAO;
+import com.spring.sample.dao.GuestTypesDAO;
 import com.spring.sample.dao.PermissionDAO;
 import com.spring.sample.dao.RentalReceiptsDAO;
 import com.spring.sample.dao.RoomDAO;
@@ -37,9 +39,23 @@ public class BaseServiceImpl {
 	
 	@Autowired
 	protected RentalReceiptsDAO rentalReceiptsDAO;
+	
+	@Autowired
+	protected GuestTypesDAO guestTypesDAO;
+	
+	@Autowired
+	protected RegisteredGuestsDAO registeredGuestsDAO;
 
 	public UserDAO getUserDAO() {
 		return userDAO;
+	}
+
+	public GuestTypesDAO getGuestTypesDAO() {
+		return guestTypesDAO;
+	}
+
+	public void setGuestTypesDAO(GuestTypesDAO guestTypesDAO) {
+		this.guestTypesDAO = guestTypesDAO;
 	}
 
 	public void setUserDAO(UserDAO userDAO) {
@@ -101,7 +117,13 @@ public class BaseServiceImpl {
 	public void setRentalReceiptsDAO(RentalReceiptsDAO rentalReceiptsDAO) {
 		this.rentalReceiptsDAO = rentalReceiptsDAO;
 	}
-	
-	
 
+	public RegisteredGuestsDAO getRegisteredGuestDAO() {
+		return registeredGuestsDAO;
+	}
+
+	public void setRegisteredGuestsDAO(RegisteredGuestsDAO registeredGuestsDAO) {
+	    this.registeredGuestsDAO = registeredGuestsDAO;
+	}
+	
 }

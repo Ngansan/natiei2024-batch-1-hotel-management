@@ -40,5 +40,7 @@ public class GuestTypes extends BaseEntity implements Serializable {
         this.typeName = typeName;
         this.surchargeRate = surchargeRate;
     }
+    public GuestTypes() {
 
+    }
 }

@@ -2,7 +2,7 @@
 <html th:replace="~{templates/layout :: layout(~{::title}, ~{::body}, ~{})}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
-    <title th:text="#{session.login.title}">Thuê phòng</title>
+    <title>Kala Hotel | Phiếu thuê phòng</title>
     <meta name="description" th:attr="content=#{meta.description}" />
     <meta name="keywords" th:attr="content=#{meta.keywords}" />
 </head>
@@ -35,33 +35,68 @@
  		<div class="main p-3 bg-white-1">
  			<div class="shadowCustom overflow-hidden rounded d-flex justify-content-between align-items-center mb-4 p-3 bg-white ">
  				<h1 style="margin: 0; font-size: 30px">Phiếu thuê phòng</h1>
-            	<h1 style="margin: 0;">Xin chào,</h1>
+            	<h1 style="margin: 0;">Xin chào</h1>
  			</div>
  			<div class="container">
  				<div class="row">
  					<div class="col-7 h-100">
  						<div id="bill-rent-setting" class="h-100 rounded overflow-auto shadowCustom bg-white rounded-3 px-1">
  							<h1 class="p-2" style="font-size: 25px; margin-bottom: 5px">Thông tin phiếu thuê phòng</h1>
- 							<form id="rentForm" th:action="@{/bill-for-rents}">
- 								<input type="hidden" th:name="ACTION" th:value="INSERT_ROOMBILL"/>
-
+ 							<form th:action="@{/bill-for-rents/add}" method="post">
+ 								<!-- <input type="hidden" th:name="ACTION" th:value="INSERT_ROOMBILL"/> -->
+ 								<div th:if="${error}" th:text="${error}" style="color: red;"></div>
  								<div class="mx-3">
- 									<label for="label-room-category" class="form-label">Chọn phòng</label>
- 									<select id="label-room-category" name="roomName" class="form-select" aria-label="Default select example" required>
+ 									<label for="roomName" class="form-label">Chọn phòng</label>
+ 									<select id="roomName" name="roomName" class="form-select" aria-label="Default select example" required>
  										<option value="" disabled selected>Chọn phòng của bạn</option>
  										<option th:each="room : ${listAvailableRooms}" th:value="${room.roomName}" th:text="${room.roomName}"></option>
  									</select>
  								</div>
  								<div class="mx-3">
- 									<label for="dateRentTextField" class="form-label">Ngày thuê</label>
- 									<input type="datetime-local" class="form-control" name="roomDateRent" id="dateRentTextField" th:value="${roomBill?.roomDateRent}" required>
+ 									<label for="checkInDateTime" class="form-label">Ngày thuê</label>
+ 									<input type="datetime-local" class="form-control" name="checkInDateTime" id="checkInDateTime" th:value="${RentalReceipts?.checkInDateTime}" required>
  								</div>
  								<div class="mx-3">
- 									<label for="dateReturnTextField" class="form-label">Ngày kết thúc</label>
- 									<input type="datetime-local" class="form-control" name="roomDateReturn" id="dateReturnTextField" th:value="${roomBill?.roomDateReturn}" required>
+ 									<label for="checkOutDateTime" class="form-label">Ngày kết thúc</label>
+ 									<input type="datetime-local" class="form-control" name="checkOutDateTime" id="checkOutDateTime" th:value="${RentalReceipts?.checkOutDateTime}" required>
  								</div>
- 							</form>
- 							<input type="submit" value="Thêm phiếu thuê" class="btn btn-info d-block m-3">
+ 								<input type="submit" value="Thêm phiếu thuê" class="btn btn-info d-block m-3">
+<!-- 								<script>
+									var input1 = document
+											.getElementById("dateRentTextField").value;
+									var input2 = document
+											.getElementById("dateReturnTextField").value;
+									var date1 = new Date(input1);
+									var date2 = new Date(input2);
+									document
+											.getElementById("dateRentTextField")
+											.addEventListener(
+													"change",
+													function() {
+														input1 = this.value;
+														delete date1;
+														date1 = new Date(input1);
+													});
+									document
+											.getElementById(
+													"dateReturnTextField")
+											.addEventListener(
+													"change",
+													function() {
+														input2 = this.value;
+														delete date2;
+														date2 = new Date(input2);
+													});
+									function checkSubmit() {
+										console.log(date1 + "\n" + date2)
+										if (date2.getTime() - date1.getTime() <= 0) {
+											alert("Không thể thêm phiếu thuê phòng do ngày kết thúc nhỏ hơn ngày bắt đầu.");
+											return false;
+										}
+										return true;
+									}
+								</script> -->
+							</form>
  						</div>
  						<div id="bill-rent-display" class="rounded overflow-auto shadowCustom bg-white rounded-3 px-1 mt-3">
  							<h1 class="p-2" style="font-size: 25px;">Danh sách phiếu thuê phòng</h1>
@@ -77,197 +112,61 @@
 	                     					<th scope="col">Thao tác</th>
  										</tr>
  									</thead>
-
  									<tbody>
-										<tr th:each="RentalReceipts, iterStat : ${listAllRoomBills}">
-											<th scope="row" th:text="${iterStat.count}"></th>
-											<td th:text="${RentalReceipts.corespondingRegisteredGuest.roomName}"></td>
-											<td th:text="${RentalReceipts.checkInDateTime}"></td>
-											<td th:text="${RentalReceipts.checkOutDateTime}"></td>
-											<td>
-												<span th:if="${RentalReceipts.paymentStatus == 0}">
-													<i class="lni lni-close" 
-													style="color: red; font-weight: bold;"></i> Chưa thanh toán
-												</span> 
-												<span th:if="${RentalReceipts.paymentStatus == -1}">
-													<i class="lni lni-timer" 
-													style="color: orange; font-weight: bold;"></i> Chờ thanh toán
-												</span> 
-												<span th:if="${RentalReceipts.paymentStatus != 0 && RentalReceipts.paymentStatus != -1}">
-													<i class="lni lni-checkmark" 
-													style="color: green; font-weight: bold;"></i> Đã thanh toán
+ 										<th:block th:each="RentalReceipts, iterStat : ${listAllRoomBills}" >
+ 											<tr class="grid-container_bill">
+												<th scope="row" th:text="${iterStat.count}"></th>
+												<td th:text="${RentalReceipts.corespondingRoom.roomName}"></td>
+												<td th:text="${RentalReceipts.checkInDateTime}"></td>
+												<td th:text="${RentalReceipts.checkOutDateTime}"></td>
+												<td><span th:if="${RentalReceipts.paymentStatus == 0}">
+														<i class="lni lni-close"
+														style="color: red; font-weight: bold;"></i> Chưa thanh
+														toán
+												</span> <span th:if="${RentalReceipts.paymentStatus == -1}">
+														<i class="lni lni-timer"
+														style="color: orange; font-weight: bold;"></i> Chờ thanh
+														toán
+												</span> <span th:if="${RentalReceipts.paymentStatus =1}"> <i
+														class="lni lni-checkmark"
+														style="color: green; font-weight: bold;"></i> Đã thanh
+														toán
 												</span>
-											</td>
-											<td>
-												<button type="button" class="btn btn-info"
-													data-bs-toggle="modal"
-													th:data-bs-target="'#' + ${iterStat.count} + 'updateModalRoomCategory'">
-													<i class="lni lni-pencil-alt"></i>
-												</button> |
-												<button type="button" class="btn btn-danger"
-													data-bs-toggle="modal"
-													th:data-bs-target="'#' + ${iterStat.count} + 'deleteModalRoomCategory'">
-													<i class="lni lni-trash-can"></i>
-												</button>
-											</td>
-											<td>
-												<button data-bs-toggle="modal"
-													th:attr="data-bs-target='#{' + ${iterStat.count} + 'selectBillRoomCategory'}"
-													class="btn btn-secondary">
-													<i class="lni lni-information"></i>
-												</button>
-
-												<div th:if="${RentalReceipts.paymentStatus == 0}">
-													|
-													<button data-bs-toggle="modal"
-														th:attr="data-bs-target='#{' + ${iterStat.count} + 'updateBillRoomCategory'}"
-														class="btn btn-info">
+												</td>
+												<td>
+													<button type="button" class="btn btn-info"
+														data-bs-toggle="modal"
+														th:data-bs-target="'#' + ${iterStat.count} + 'updateModalRoomCategory'">
 														<i class="lni lni-pencil-alt"></i>
-													</button>
-
-													<button data-bs-toggle="modal"
-														th:attr="data-bs-target='#{' + ${iterStat.count} + 'deleteBillRoomCategory'}"
-														class="btn btn-danger">
+													</button> |
+													<button type="button" class="btn btn-danger"
+														data-bs-toggle="modal"
+														th:data-bs-target="'#' + ${iterStat.count} + 'deleteModalRoomCategory'">
 														<i class="lni lni-trash-can"></i>
 													</button>
-												</div>
-												<div class="modal fade" id="${j}deleteBillRoomCategory"
-													tabindex="-1" aria-labelledby="deleteBillRoomLabel"
-													aria-hidden="true">
-													<div class="modal-dialog">
-														<div class="modal-content">
-															<div class="modal-header">
-																<h1 class="modal-title fs-5" id="deleteBillRoomLabel">Xóa
-																	thông tin phiếu thuê phòng</h1>
-																<button type="button" class="btn-close"
-																	data-bs-dismiss="modal" aria-label="Close"></button>
-															</div>
-															<div class="modal-body">
-																<p style="text-align: left">Bạn có chắc chắn muốn
-																	xóa phiếu thuê phòng này không?</p>
-																<p
-																	style="color: red; font-weight: bold; text-align: left;"
-																	class="pt-2">Lưu ý: Nếu có khách hàng trong phiếu
-																	thuê phòng đó thì tất cả các khách hàng cũng sẽ bị xóa
-																	theo!</p>
-															</div>
-															<div class="modal-footer">
-																<button type="button" class="btn btn-secondary"
-																	data-bs-dismiss="modal">Đóng</button>
-																<a
-																	th:href="@{/bill-for-rents(ACTION='DELETE_ROOMBILL', roomBillId=${roomBill.roomBillId}, roomId=${roomBill.roomId})}"
-																	class="btn btn-danger">Xóa</a>
-															</div>
-														</div>
+												</td>
+												<td>
+													<button data-bs-toggle="modal"
+														th:data-bs-target="'#' + ${iterStat.count} + 'selectBillRoomCategory'"
+														class="btn btn-secondary">
+														<i class="lni lni-information"></i>
+													</button>
+													<div th:if="${RentalReceipts.paymentStatus == 0}">
+														<button data-bs-toggle="modal"
+															th:data-bs-target="'#' + ${iterStat.count} + 'updateBillRoomCategory'"
+															class="btn btn-info">
+															<i class="lni lni-pencil-alt"></i>
+														</button>
+														<button data-bs-toggle="modal"
+															th:data-bs-target="'#' + ${iterStat.count} + 'deleteBillRoomCategory'"
+															class="btn btn-danger">
+															<i class="lni lni-trash-can"></i>
+														</button>
 													</div>
-												</div>
-												<div class="modal fade"
-													th:id="${j} + 'selectBillRoomCategory'" tabindex="-1"
-													aria-labelledby="selectBillRoomLabel" aria-hidden="true">
-													<div class="modal-dialog modal-lg">
-														<div class="modal-content">
-															<div class="modal-header">
-																<h1 class="modal-title fs-5" id="selectBillRoomLabel">Thông
-																	tin phiếu thuê phòng</h1>
-																<button type="button" class="btn-close"
-																	data-bs-dismiss="modal" aria-label="Close"></button>
-															</div>
-															<div class="modal-body">
-																<div class="mx-1" style="text-align: left;">
-																	<label for="label-room-name" class="form-label">Phòng</label>
-																	<input id="label-room-name" name="roomName"
-																		class="form-control" readonly
-																		th:value="${roomBill.roomName}"> <label
-																		for="label-room-date" class="form-label">Ngày
-																		thuê</label> <input id="label-room-date" name="roomDateRent"
-																		class="form-control" readonly
-																		th:value="${roomBill.roomDateRent}"> <label
-																		for="label-room-date-return" class="form-label">Ngày
-																		kết thúc</label> <input id="label-room-date-return"
-																		name="roomDateReturn" class="form-control" readonly
-																		th:value="${roomBill.roomDateReturn}">
-																</div>
-
-																<div class="mx-1 my-3" style="text-align: left;">
-																	<p style="font-size: 20px; font-weight: bold;">Danh sách khách hàng</p>
-																	<p>Đơn giá 1 ngày dự tính: <span style="color: red; font-weight: bold;">[[${#numbers.formatDecimal(roomBill.roomPriceDay,
-																			0, 'COMMA')}]đ</span>
-																	</p>
-																	<p class="text-end">Số khách: 
-																		<span th:text="${#lists.size(listCountCustomer)}">0</span>
-																		<span th:if="${roomBill.roomPaymentStatus == 0}">/
-																			<span th:text="${requestScope.getMaxCustomerConstraint}"></span>
-																		</span>
-																	</p>
-																</div>
-
-																<div class="mx-3 overflow-auto" style="height: 200px;">
-																	<table class="table table-hover">
-																		<thead>
-																			<tr>
-																				<th scope="col">STT</th>
-																				<th scope="col">Họ tên</th>
-																				<th scope="col">Loại khách</th>
-																				<th scope="col">Địa chỉ</th>
-																				<th scope="col">CMND</th>
-																				<th scope="col">Thao tác</th>
-																			</tr>
-																		</thead>
-																		<tbody>
-																			<tr
-																				th:each="listCustomer, iterStat : ${listCustomer}"
-																				th:if="${roomBill.roomBillId == listCustomer.roomBillId}">
-																				<th scope="row" th:text="${iterStat.index + 1}">1</th>
-																				<td th:text="${listCustomer.customerName}"></td>
-																				<td><span
-																					th:each="listTypeCustomer : ${listTypeCustomer}"
-																					th:if="${listCustomer.typeCustomerId == listTypeCustomer.typeCustomerId}"
-																					th:text="${listTypeCustomer.typeCustomerName}"></span>
-																				</td>
-																				<td th:text="${listCustomer.customerAddress}"></td>
-																				<td th:text="${listCustomer.customerIdentityCode}"></td>
-																			</tr>
-																		</tbody>
-																	</table>
-																</div>
-															</div>
-															<div class="modal-footer">
-																<button type="button" class="btn btn-secondary"
-																	data-bs-dismiss="modal">Đóng</button>
-															</div>
-														</div>
-													</div>
-												</div>
-
-
-
-
-											</td>
-										</tr>
-										
-
-
-										<td>1</td>
-                   						<td>Phòng 1</td>
-                   						<td>2024-08-12</td>
-                   						<td>2024-08-15</td>
-                   						<td>
-                   							<span class="status unpaid"><i class="lni lni-close" style="color: red; font-weight: bold;"></i>
-                   								Chưa thanh toán
-                   							</span>
-                       						<span class="status pending"><i class="lni lni-timer" style="color: orange; font-weight: bold;"></i>
-                       							Chờ thanh toán</span>
-                       						<span class="status paid"><i class="lni lni-checkmark" style="color: green; font-weight: bold;"></i>
-                       							Đã thanh toán
-                       						</span>
-                   						</td>
-                   						<td>
-                   							<button class="btn btn-secondary"><i class="lni lni-information"></i></button>
-                       						<button class="btn btn-info"><i class="lni lni-pencil-alt"></i></button>
-                       						<button class="btn btn-danger"><i class="lni lni-trash-can"></i></button>
-                   						</td>
-
- 									</tbody>
+												</td>
+											</tr>
+ 										</th:block>
+									</tbody>
  								</table>
  							</div>
  						</div>
@@ -277,7 +176,7 @@
 							class="rounded overflow-auto shadowCustom bg-white rounded-3 px-1">
 							<h1 class="p-3" style="font-size: 20px">Danh sách phòng</h1>
 							<div style="height: 400px; overflow: auto;">
-								<table class="table table-hover overflow-y">
+								<table class="table table-hover overflow-y list_room">
 									<thead>
 										<tr>
 											<th scope="col">STT</th>
@@ -291,16 +190,16 @@
 									<tbody>
 										<tr th:each="room, iterStat : ${rooms}">
 											<th scope="row" th:text="${iterStat.index + 1}">1</th>
-											<td th:text="${room.name}">Room Name</td>
-											<td th:text="${room.type}">Type of Room</td>
-											<td th:text="${room.price}">Price</td>
+											<td th:text="${room.roomName}"></td>
+											<td th:text="${room.roomType.roomTypeName}"></td>
+											<td th:text="${room.roomType.price}"></td>
 											<td class="ghi-chu" th:attr="title=${room.note}"
-												th:text="${room.note}">Note</td>
-											<td th:if="${room.status == 'rented'}"><i
+												th:text="${room.note}"></td>
+											<td th:if="${room.status == 1}"><i
 												class="lni lni-close" style="color: red; font-weight: bold;"></i>
 												Đã thuê
 											</td>
-											<td th:if="${room.status == 'available'}"><i
+											<td th:if="${room.status == 0}"><i
 												class="lni lni-checkmark"
 												style="color: green; font-weight: bold;"></i> Trống
 											</td>
@@ -311,11 +210,193 @@
 							</div>
 						</div>
 					</div>
+					<!-- Modal Xóa Phiếu Thuê Phòng -->
+					<div th:each="RentalReceipts, iterStat : ${listAllRoomBills}"> 
+						<div class="modal fade" th:id="${iterStat.count} + 'deleteModalRoomCategory'" tabindex="-1" aria-labelledby="deleteBillRoomLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h1 class="modal-title fs-5" id="deleteBillRoomLabel">Xóa thông tin phiếu thuê phòng</h1>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<p style="text-align: left">Bạn có chắc chắn muốn xóa phiếu thuê phòng này không?</p>
+										<p style="color: red; font-weight: bold; text-align: left;" class="pt-2">Lưu ý: Nếu có khách hàng trong phiếu thuê phòng đó thì tất cả các khách hàng cũng sẽ bị xóa theo!</p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+										<a th:href="@{/bill-for-rents(ACTION='DELETE_ROOMBILL')}" class="btn btn-danger">Xóa</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<!-- Modal Cập nhật thông tin phiếu thuê phòng-->
+						<div th:id="${iterStat.count} + 'updateModalRoomCategory'"
+							class="modal fade" tabindex="-1"
+							aria-labelledby="updateBillRoomLabel" aria-hidden="true">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h1 class="modal-title fs-5" id="updateBillRoomLabel">Cập nhật thông tin phiếu thuê phòng</h1>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<form th:action="@{/bill-for-rents}">
+											<!-- <input type="hidden" name="ACTION" value="UPDATE_ROOMBILL" />  -->
+											<input type="hidden" name="roomBillId" /> 
+											<input type="hidden" name="oldRoomId" />
+											<div class="mx-1" style="text-align: left;">
+												<div class="mx-3">
+													<label for="label-room-category" class="form-label">Phòng</label>
+													<select id="label-room-category" name="newRoomId" class="form-select" aria-label="Default select example" required>
+														<option disabled selected>chọn phòng</option>
+														<option>P101</option>
+														<option>P102</option>
+														<option>P103</option>
+													</select>
+												</div>
+												<div class="mx-3">
+													<label for="dateRentTextFieldUpdate" class="form-label">Ngày thuê</label> 
+													<input type="datetime-local" class="form-control" name="roomDateRent" id="${iterStat.count} + 'dateRentTextFieldUpdate'" required>
+												</div>
+												<div class="mx-3">
+													<label for="dateReturnTextFieldUpdate" class="form-label">Ngày kết thúc</label> 
+													<input type="datetime-local" class="form-control" name="roomDateReturn" id="${iterStat.count} + 'dateReturnTextFieldUpdate'" required>
+												</div>
+											</div>
+
+											<div class="mx-3 my-3" style="text-align: left;">
+												<p style="font-size: 20px; font-weight: bold;">Danh sách khách hàng</p>
+												<p> Đơn giá 1 ngày dự tính: 
+													<span style="color: red; font-weight: bold;"> <span>10đ</span></span>
+												</p>
+												<div class="d-flex justify-content-between align-center">
+													<button type="button" class="btn btn-info"
+														data-bs-dismiss="modal" data-bs-toggle="modal"
+														th:data-bs-target="'#' + ${iterStat.count} + 'insertCustomerCategory'">Thêm khách hàng</button>
+													<p> Số khách: <span>0</span> <span>0</span> / <span></span></p>
+												</div>
+											</div>
+											<div class="mx-3 overflow-auto" style="height: 200px;">
+												<table class="table table-hover">
+													<thead>
+														<tr>
+															<th scope="col">STT</th>
+															<th scope="col">Họ tên</th>
+															<th scope="col">Loại khách</th>
+															<th scope="col">Địa chỉ</th>
+															<th scope="col">CMND</th>
+															<th scope="col">Thao tác</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<th scope="row">1</th>
+															<td>Ngân</td>
+															<td>abc</td>
+															<td>123 êf</td>
+															<td>456</td>
+															<td>
+																<button type="button" data-bs-toggle="modal"
+																	th:data-bs-target="'#' + ${iterStat.count} + ${iterStatCustomer.index + 1} + 'updateCustomerCategory'"
+																	class="btn btn-info">
+																	<i class="lni lni-pencil-alt"></i>
+																</button> |
+																<button type="button" data-bs-toggle="modal"
+																	th:data-bs-target="'#' + ${iterStat.count} + ${iterStatCustomer.index + 1} + 'deleteCustomerCategory'"
+																	class="btn btn-danger">
+																	<i class="lni lni-trash-can"></i>
+																</button>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+												<input type="submit" class="btn btn-info" value="Cập nhật" />
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<!-- Modal thông tin phiếu thuê phòng -->
+					
+<!-- 						<div th:each="roomBill, iterStat : ${roomBills}"
+							th:id="${iterStat.index} + 'selectBillRoomCategory'"
+							class="modal fade" tabindex="-1"
+							aria-labelledby="selectBillRoomLabel" aria-hidden="true"> -->
+							
+						<div th:id="${iterStat.count} + 'selectBillRoomCategory'"
+							class="modal fade" tabindex="-1"
+							aria-labelledby="selectBillRoomLabel" aria-hidden="true">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h1 class="modal-title fs-5" id="selectBillRoomLabel">Thông tin phiếu thuê phòng</h1>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<div class="mx-1" style="text-align: left;">
+											<label for="label-room-name" class="form-label">Phòng</label>
+											<input id="label-room-name" name="roomName" class="form-control" readonly> 
+											<label for="label-room-date" class="form-label">Ngày thuê</label> 
+											<input id="label-room-date" name="roomDateRent" class="form-control" readonly> 
+											<label for="label-room-date-return" class="form-label">Ngày kết thúc</label> 
+											<input id="label-room-date-return" class="form-control" name="roomDateReturn" readonly>
+										</div>
+										<div class="mx-1 my-3" style="text-align: left;">
+											<p style="font-size: 20px; font-weight: bold;">Danh sách khách hàng</p>
+											<p> Đơn giá 1 ngày dự tính: 
+												<span style="color: red; font-weight: bold;">20đ</span>
+											</p>
+											<p class="text-end">Số khách: 
+												<span>0</span>
+												<span >/ 
+												<span></span>
+												</span>
+											</p>
+										</div>
+										<div class="mx-3 overflow-auto" style="height: 200px;">
+											<table class="table table-hover">
+												<thead>
+													<tr>
+														<th scope="col">STT</th>
+														<th scope="col">Họ tên</th>
+														<th scope="col">Loại khách</th>
+														<th scope="col">Địa chỉ</th>
+														<th scope="col">CMND</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr >
+														<th scope="row"></th>
+														<td>10</td>
+														<td>Kim Ngân</td>
+														<td>123</td>
+														<td>123 abc</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-bs-dismiss="modal">Đóng</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div> 
 				</div>
  			</div>
  		</div>
 	</div>
-
+	
 
 
 </body>
